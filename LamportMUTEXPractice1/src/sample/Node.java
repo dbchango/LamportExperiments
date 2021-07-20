@@ -280,13 +280,9 @@ public class Node implements Runnable {
     public static void main(String[] args){
 
         Node n = new Node(1, "./src/tmp/foo");
+        n.init_connections();
         NodeListenerThread nlistener = new NodeListenerThread(n);
-        Node n2 = new Node(2, "./src/tmp/foo");
-        NodeListenerThread nlistener2 = new NodeListenerThread(n2);
-        Thread t = new Thread(n);
-        Thread t2 = new Thread(n2);
-        t.start();
-        t2.start();
+        nlistener.start();
 
     }
 }
