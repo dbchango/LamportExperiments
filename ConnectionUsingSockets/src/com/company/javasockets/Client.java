@@ -9,10 +9,18 @@ public class Client {
     public static final int PORT = 9090;
     public static void main(String[] args) throws IOException {
         Socket socket = new Socket(SERVER_IP, PORT);
-        BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        String serverResponse = input.readLine();
+        ServerConnection serverConn = new ServerConnection(socket);
 
-        JOptionPane.showMessageDialog(null, serverResponse);
+        BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
+        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+        new Thread(serverConn).start();
+        while(true){
+            System.out.println("> ");
+            String command = keyboard.readLine();
+            if(command.equals("quit")) break;
+            out.println(command);
+        }
         socket.close();
         System.exit(0);
     }
