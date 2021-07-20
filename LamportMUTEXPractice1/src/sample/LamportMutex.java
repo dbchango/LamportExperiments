@@ -9,10 +9,10 @@ public class LamportMutex {
     private boolean request_made;
     public List<Integer> pending_replies;
 
-    public LamportMutex(Node n){
+    public LamportMutex(Node n) {
         node_ref = n;
-        requestList = Collections.synchronizedList(new ArrayList<Message>(){
-            public synchronized boolean add(Message msg){
+        requestList = Collections.synchronizedList(new ArrayList<Message>() {
+            public synchronized boolean add(Message msg) {
                 boolean ret = super.add(msg);
                 Collections.sort(requestList);
                 return ret;
@@ -20,66 +20,66 @@ public class LamportMutex {
         });
     }
 
-    public synchronized void queue_request(Message msg){
+    public synchronized void queue_request(Message msg) {
         requestList.add(msg);
     }
 
-    public synchronized void release_request(Message msg){
+    public synchronized void release_request(Message msg) {
         int pid = msg.getSender();
-
-        if (requestList.get(0).getSender() == pid){
+        /* the first msg in the list should be the one
+           to be released. otherwise something is wrong
+         */
+        if (requestList.get(0).getSender() == pid) {
             requestList.remove(0);
-        }else{
-            System.err.println("release message wasn't from the process first in the queue");
+        }
+        else {
+            //System.err.println("release message wasn't from the process first in the queue");
         }
     }
 
-    public synchronized void release_request(){
+    public synchronized void release_request() {
         /*
-        * This is called when the local node
-        * is done executing critic section
-        * */
+        this is called when the local node
+        is done executing crit section
+         */
         request_made = false;
         requestList.remove(0);
     }
 
-    public synchronized boolean request_crit_section(){
-        /*
-        * On true, node can enter the crit section,
-        * on false node can not, and then node block exec
-        * till it gets critical section.
-        * */
-        if(!request_made){
+
+    public synchronized boolean request_crit_section() {
+        /* on true, node can enter the crit section,
+           on false node can not. and then node blocks exec
+           till it gets critical section.
+        */
+        if (!request_made) {
             request_made = true;
             pending_replies = new ArrayList<>(node_ref.other_pids);
             /*
-            * We need our data structures prepared before we start getting
-            * replies from other nodes!,
-            * so once that is done, multicast request.
-            * */
+            we need our data structures prepared before we start getting
+            replies from other nodes!,
+            so once that is done, multicast request.
+             */
             node_ref.multicast("request");
         }
-        if(requestList.get(0).getSender() == node_ref.getPid()){
-            /*
-            * We are highest priority!, now wait for all replies
-            * */
-            if(pending_replies.isEmpty()){
+        if(requestList.get(0).getSender() == node_ref.getPid()) {
+            /* we're highest priority!, now wait for all replies */
+            if (pending_replies.isEmpty()) {
                 /*
                 Go ahead! execute critical section
-                after you are done, call realease_request no arguments
-                * */
+                after you're done, call release_request with no arguments
+                 */
                 return true;
             }
         }
         return false;
     }
 
-    public synchronized void reply_request(Message msg){
+    public synchronized void reply_request(Message msg) {
         if(request_made) {
             System.out.println("pending replies: "+pending_replies);
             System.out.println("request queue:"+requestList);
-            //pending_replies.remove(new Integer(msg.getSender()));
-            pending_replies.remove(msg.getSender());
+            pending_replies.remove(new Integer(msg.getSender()));
         }
         else {
             //System.err.println("got reply but we don't have a pending request, something is wrong");
