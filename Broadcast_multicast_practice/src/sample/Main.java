@@ -30,8 +30,9 @@ public class Main extends Application {
     {
 
         System.out.println("Broadcast initialized");
-        broadcast("Hello", InetAddress.getByName("255.255.255.255"));
+        //broadcast("Hello", InetAddress.getByName("255.255.255.255"));
         //launch(args);
+        List<InetAddress> broadcastList = listAllBroadcastAddresses();
     }
 
     public static void broadcast (

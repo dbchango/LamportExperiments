@@ -42,7 +42,7 @@ public class BroadcastingClient {
             }
             networkInterface.getInterfaceAddresses().stream()
                     .map(a-> {
-                        System.out.println(a.getAddress().getHostName());
+                        System.out.println(a.getBroadcast());
                         return a.getBroadcast();
                     })
                     .filter(Objects::nonNull)
