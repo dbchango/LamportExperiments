@@ -5,7 +5,7 @@ import java.net.*;
 
 public class Client {
 
-    public Client(){
+    public static void main(String[] args){
         try{
             Socket socket = new Socket("10.0.0.5", 6666);
             DataOutputStream dout = new DataOutputStream(socket.getOutputStream());
