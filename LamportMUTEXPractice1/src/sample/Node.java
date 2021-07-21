@@ -200,7 +200,7 @@ public class Node implements Runnable {
         System.out.println("executing crit");
         this.crit_executions += 1;
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch(InterruptedException ex) {}
         write_sharedlog("Leaving");
     }
@@ -209,7 +209,7 @@ public class Node implements Runnable {
     public void run() {
         run_listener();
         try {
-            Thread.sleep(8000);//till I start other processes;
+            Thread.sleep(1000);//till I start other processes;
         } catch (InterruptedException ex) {}
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -278,7 +278,7 @@ public class Node implements Runnable {
 
     public static void main(String[] args) {
         //System.out.println(args[1]);
-        Node n = new Node(2, "./src/tmp/foo");
+        Node n = new Node(1, "./src/tmp/foo");
         //n.init_connections();
         Thread t = new Thread(n);
         t.start();

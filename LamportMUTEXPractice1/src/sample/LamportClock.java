@@ -6,7 +6,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class LamportClock {
-    private int d  = -1000;
+    private int d  = 1000;
     private long clock = System.currentTimeMillis();
     public LamportClock() {}
     public LamportClock(int d) {
