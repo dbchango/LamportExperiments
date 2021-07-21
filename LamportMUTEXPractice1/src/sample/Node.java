@@ -281,6 +281,5 @@ public class Node implements Runnable {
         //n.init_connections();
         Thread t = new Thread(n);
         t.start();
-
     }
 }
