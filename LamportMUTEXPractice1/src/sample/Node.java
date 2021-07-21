@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.*;
 
 public class Node implements Runnable {
+
     private class NodeLookup {
         public HashMap<String,String> table;
         public NodeLookup(HashMap<String,String> table) {
@@ -180,7 +181,7 @@ public class Node implements Runnable {
     public synchronized void multicast(String type) {
         this.localclock.local_event();
         if(type.equals("request")) {
-            System.out.println("sending request at "+localclock.peek());
+            System.out.println("sending request at "+localclock.getHour());
             send_message(this.pid, type);
         }
         for(String pid_str: lookup.table.keySet()) {
@@ -264,7 +265,7 @@ public class Node implements Runnable {
         try {
             Writer sharedlog_writer = new PrintWriter(new FileWriter("shared.log",true));
             sharedlog_writer.append(
-                    String.format("%-5s %-10s %-6s\n",this.pid,action,localclock.peek()));
+                    String.format("%-5s %-10s %-6s\n",this.pid,action,localclock.getHour()));
             sharedlog_writer.close();
         } catch(IOException ex) {
             ex.printStackTrace();
