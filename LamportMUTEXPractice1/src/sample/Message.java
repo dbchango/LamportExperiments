@@ -5,7 +5,7 @@ import java.util.Comparator;
 
 public class Message implements Serializable, Comparable<Message> {
     final int from, to;
-    final int clock;
+    final long clock;
     final String type;
     final String content;
 
@@ -34,19 +34,19 @@ public class Message implements Serializable, Comparable<Message> {
     // getters and setters
     public int getSender() { return from; }
     public int getReceiver() { return to; }
-    public int getClock() { return clock; }
+    public long getClock() { return clock; }
     public String getType() { return type; }
     public String getContent() { return content; }
 
     public static class MessageBuilder {
         private int to, from;
-        private int clock;
+        private long clock;
         private String type;
         private String content = "";
         public MessageBuilder(){}
         public MessageBuilder from(int from) {this.from = from; return this;}
         public MessageBuilder to(int to) {this.to = to; return this;}
-        public MessageBuilder clock(int clock) {this.clock = clock; return this;}
+        public MessageBuilder clock(long clock) {this.clock = clock; return this;}
         public MessageBuilder type(String type) {this.type = type; return this;}
         public MessageBuilder content(String content) {this.content = content; return this;}
         public Message build() {return new Message(this);}
