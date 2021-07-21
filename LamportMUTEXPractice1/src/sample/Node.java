@@ -105,7 +105,7 @@ public class Node implements Runnable {
         this.localclock.msg_event(msg.getClock());
         //System.out.println("new local clock: "+localclock.peek());
         if      (msg.getType().equals("request")) {
-            System.out.println(msg.getType()+".from..."+msg);
+            System.out.println(msg.getType()+".from..."+msg.from+" at "+msg.getHour());
             mutex.queue_request(msg);
             /*
             in version 1, send reply to all requests whatsoever
@@ -113,12 +113,12 @@ public class Node implements Runnable {
             send_message(msg.getSender(),"reply");
         }
         else if (msg.getType().equals("release")) {
-            System.out.println(msg.getType()+".from..."+msg);
+            System.out.println(msg.getType()+".from... "+msg.from+" at "+msg.getHour());
             //this.total_protocol_msgs += 1;
             mutex.release_request(msg);
         }
         else if (msg.getType().equals("reply")) {
-            System.out.println(msg.getType()+".from..."+msg);
+            System.out.println(msg.getType()+".from... "+msg.from+" at "+msg.getHour());
             this.total_protocol_msgs += 1;
             mutex.reply_request(msg);
         }

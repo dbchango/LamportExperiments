@@ -1,14 +1,19 @@
 package sample;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class Message implements Serializable, Comparable<Message> {
     final int from, to;
     final long clock;
     final String type;
     final String content;
-
+    public SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd: HH:mm:ss, SSS", Locale.US);
+    public GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("US/Central"));
     public Message(MessageBuilder builder){
         this.from = builder.from; this.to = builder.to;
         this.clock = builder.clock;
@@ -51,6 +56,7 @@ public class Message implements Serializable, Comparable<Message> {
         public MessageBuilder content(String content) {this.content = content; return this;}
         public Message build() {return new Message(this);}
 
+
     }
 
     public static void main(String[] args){
@@ -62,5 +68,8 @@ public class Message implements Serializable, Comparable<Message> {
         System.out.println(msg.getClock());
 
     }
-
+    public String getHour(){
+        calendar.setTimeInMillis(this.clock);
+        return sdf.format(calendar.getTime());
+    }
 }
