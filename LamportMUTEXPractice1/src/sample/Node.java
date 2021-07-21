@@ -277,9 +277,10 @@ public class Node implements Runnable {
 
     public static void main(String[] args) {
         //System.out.println(args[1]);
-        Node n = new Node(Integer.parseInt(args[0]),args[1]);
-        n.init_connections();
+        Node n = new Node(1, "./src/tmp/foo");
+        //n.init_connections();
         Thread t = new Thread(n);
         t.start();
+
     }
 }
